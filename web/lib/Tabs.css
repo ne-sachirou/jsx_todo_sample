@@ -1,0 +1,22 @@
+@charset "UTF-8";
+
+.Tabs {
+  &__tabList {
+    background: #ddd;
+  }
+
+  &__tab {
+    display: inline-block;
+    padding: 0 1mm;
+
+    &--active {
+      background: #fff;
+    }
+
+    &--inactive {
+    }
+  }
+
+  &__tabPanel {
+  }
+}

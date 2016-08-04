@@ -1,0 +1,20 @@
+.TaskList {
+  &__todoMark {
+    color: #111;
+    cursor: pointer;
+  }
+
+  &__todoEdit {
+    color: #111;
+    cursor: pointer;
+  }
+
+  &__doneMark {
+    color: #111;
+    cursor: pointer;
+  }
+
+  &__doneLabel {
+    text-decoration: line-through;
+  }
+}

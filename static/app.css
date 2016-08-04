@@ -1,0 +1,1 @@
+.Tabs__tabList{background:#ddd}.Tabs__tab{display:inline-block;padding:0 1mm}.Tabs__tab--active{background:#fff}.AddTaskForm__input{box-shadow:0 0 1px #333;margin:1mm;min-height:1.1em}.AddTaskForm__errors{color:red}.TaskList__doneMark,.TaskList__todoEdit,.TaskList__todoMark{color:#111;cursor:pointer}.TaskList__doneLabel{text-decoration:line-through}.Todo{width:800px}

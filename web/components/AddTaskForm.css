@@ -1,0 +1,11 @@
+.AddTaskForm {
+  &__input {
+    box-shadow: 0 0 1px #333;
+    margin: 1mm;
+    min-height: 1.1em;
+  }
+
+  &__errors {
+    color: red;
+  }
+}
