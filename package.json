@@ -2,7 +2,7 @@
   "name": "jsx_todo_sample",
   "version": "1.0.0",
   "description": "Frameworkless",
-  "main": "index.js",
+  "main": "app/index.js",
   "repository": {
     "type": "git",
     "url": "git@github.com:ne-sachirou/jsx_todo_sample.git"

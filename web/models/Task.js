@@ -1,12 +1,16 @@
 'use strict'
+import Changeset from '../lib/Changeset'
 
 var _repo = {
-  task: []
+  task_id_seq: 0,
+  todo: [],
+  done: []
 }
 
 export default class Task {
   constructor (props = {}) {
     this.id = props.id
+    this.is_done = props.is_done || false
     this.priority = props.priority || null
     this.created_at = props.created_at || null
     this.title = props.title
@@ -64,12 +68,12 @@ Task.sort = function (tasks) {
 
 Task.Model = {
   keys: ['id'],
-  props: ['priority', 'created_at', 'title', 'contexts', 'projects']
+  props: ['is_done', 'priority', 'created_at', 'title', 'contexts', 'projects']
 }
 
 Task.Repository = class TaskRepository {
   find (id) {
-    return _repo.task[id - 1]
+    return _repo.todo.first(task => task.id === id)
   }
 
   persist (changeset) {
@@ -85,14 +89,17 @@ Task.Repository = class TaskRepository {
     )
     switch (action) {
       case 'create':
-        changes.id = _repo.task.length
-        _repo.task[changes.id] = new Task(changes)
+        changes.id = ++_repo.task_id_seq
+        _repo.todo.push(new Task(changes))
         break
       case 'update':
-        for (let prop of Object.keys(changes)) {
-          _repo.task[changeset.data.id][prop] = changes[prop]
+        {
+          let task = _repo.todo.first(task => task.id === changeset.data.id)
+          for (let prop of Object.keys(changes)) {
+            task[prop] = changes[prop]
+          }
+          break
         }
-        break
     }
     changeset.data = Object.assign(new Task(), changeset.data, changes)
     changeset.changes = {}
@@ -100,32 +107,13 @@ Task.Repository = class TaskRepository {
   }
 
   destroy (id) {
-    _repo.task.splice(id - 1, 1)
+    _repo.todo = _repo.todo.filter(task => task.id !== id)
   }
 }
 
-Task.Changeset = class TackChangeset {
-  constructor (data, changes) {
-    this.data = data
-    this.changes = changes
-    this.errors = {
-      priority: [],
-      title: [],
-      contexts: [],
-      projects: []
-    }
-  }
-
+Task.Changeset = class TaskChangeset extends Changeset(Task.Model) {
   validate () {
     if (this.changes.title !== void 0 && this.changes.title === '') this.errors.title.push('Title is empty.')
-    const errorNum = Object.keys(this.errors).reduce(
-      (errorNum, propName) => errorNum + this.errors[propName].length,
-      0
-    )
-    if (errorNum > 0) {
-      const err = new Error('ValidationError')
-      err.changeset = this
-      throw err
-    }
+    super.validate()
   }
 }
